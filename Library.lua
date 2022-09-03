@@ -537,7 +537,7 @@ sectionButton.Parent = sectionFrame
 local sectionIcon = Instance.new("ImageLabel")
 sectionIcon.Name = "SectionIcon"
 sectionIcon.Image = getcustomasset("Unnamed/Chevron.png")
-sectionIcon.ImageTransparency = 0.14
+sectionIcon.ImageColor3 = Theme.SectionText
 sectionIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 sectionIcon.BackgroundTransparency = 1
 sectionIcon.Position = UDim2.new(0, 155, 0, 5)
@@ -857,7 +857,7 @@ local dropdownElementText = Instance.new("TextLabel")
 dropdownElementText.Name = "dropdownElementText"
 dropdownElementText.Font = Enum.Font.GothamBold
 dropdownElementText.Text = str
-dropdownElementText.TextColor3 = Color3.fromRGB(220, 220, 220)
+dropdownElementText.TextColor3 = Theme.ItemText
 dropdownElementText.TextSize = 12
 dropdownElementText.TextXAlignment = Enum.TextXAlignment.Left
 dropdownElementText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -877,6 +877,14 @@ dropdownElementButton.BackgroundTransparency = 1
 dropdownElementButton.Size = UDim2.new(0, 171, 0, 24)
 dropdownElementButton.Parent = dropdownElement
 
+dropdownElement.MouseEnter:Connect(function()
+    TweenService:Create(dropdownElement, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundTransparency = .94}):Play()
+end)
+
+dropdownElement.MouseLeave:Connect(function()
+    TweenService:Create(dropdownElement, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundTransparency = 1}):Play()
+end)
+
 dropdownElementButton.MouseButton1Click:Connect(function()
     pcall(Info.Callback, dropdownElementText.Text)
     if Info.ChangeTextOnPick then
@@ -891,6 +899,8 @@ dropdownElementButton.MouseButton1Click:Connect(function()
     section.Size = DropdownOpened and UDim2.new(0, 175, 0, section.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, section.Size.Y.Offset - (DropdownY))
     sectionFrame.Size = DropdownOpened and UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset - (DropdownY))
     itemContainer.Size = DropdownOpened and UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset - (DropdownY))
+    dropdownIcon.Rotation = DropdownOpened and -90 or 90
+    dropdownIcon.Position = DropdownOpened and UDim2.new(0, 156, 0, 5) or UDim2.new(0, 155, 0, 5)
 end)
 end
 
@@ -907,6 +917,8 @@ SectionOpened:GetPropertyChangedSignal("Value"):Connect(function()
     section.Size = DropdownOpened and UDim2.new(0, 175, 0, section.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, section.Size.Y.Offset - (DropdownY))
     sectionFrame.Size = DropdownOpened and UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset - (DropdownY))
     itemContainer.Size = DropdownOpened and UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset - (DropdownY))
+    dropdownIcon.Rotation = DropdownOpened and -90 or 90
+    dropdownIcon.Position = DropdownOpened and UDim2.new(0, 156, 0, 5) or UDim2.new(0, 155, 0, 5)
 end)
 
 dropdownTextButton.MouseButton1Click:Connect(function()
@@ -918,6 +930,8 @@ dropdownTextButton.MouseButton1Click:Connect(function()
     section.Size = DropdownOpened and UDim2.new(0, 175, 0, section.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, section.Size.Y.Offset - (DropdownY))
     sectionFrame.Size = DropdownOpened and UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset - (DropdownY))
     itemContainer.Size = DropdownOpened and UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset + (DropdownY)) or UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset - (DropdownY))
+    dropdownIcon.Rotation = DropdownOpened and -90 or 90
+    dropdownIcon.Position = DropdownOpened and UDim2.new(0, 156, 0, 5) or UDim2.new(0, 155, 0, 5)
 end)
 
 return insidedropdown
