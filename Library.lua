@@ -873,7 +873,7 @@ sliderInnerUICorner.Parent = sliderInner
 
 local dragIcon = Instance.new("ImageLabel")
 dragIcon.Name = "dragIcon"
-dragIcon.Image = "rbxassetid://10766200938"
+dragIcon.Image = getcustomasset("Unnamed/Circle.png")
 dragIcon.ImageColor3 = Theme.ItemText
 dragIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 dragIcon.BackgroundTransparency = 1
