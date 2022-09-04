@@ -37,6 +37,7 @@ local Themes = {
         SliderOuter = Color3.fromRGB(60, 60, 70),
         SliderInner = Color3.fromRGB(80, 201, 206),
         ToggleOuter = Color3.fromRGB(35, 35, 40),
+        InputPlaceHolder = Color3.fromRGB(60, 60, 65),
         ToggleOuterEnabled = Color3.fromRGB(53, 53, 61),
         ToggleOuterUIStroke = Color3.fromRGB(54, 54, 62),
         ToggleOuterUIStrokeEnabled = Color3.fromRGB(67, 67, 77),
@@ -69,6 +70,7 @@ local Themes = {
         SliderOuter = Color3.fromRGB(56, 59, 83),
         SliderInner = Color3.fromRGB(255, 183, 38),
         TabUIStroke = Color3.fromRGB(55, 56, 80),
+        InputPlaceHolder = Color3.fromRGB(70, 73, 94),
         ToggleOuter = Color3.fromRGB(56, 59, 83),
         ToggleOuterEnabled = Color3.fromRGB(77, 82, 115),
         ToggleOuterUIStroke = Color3.fromRGB(76, 79, 112),
@@ -98,6 +100,7 @@ local Themes = {
         SectionUIStroke = Color3.fromRGB(35, 41, 54),
         MainUIStroke = Color3.fromRGB(54, 65, 85),
         Main = Color3.fromRGB(19, 22, 29),
+        InputPlaceHolder = Color3.fromRGB(57, 66, 89),
         Shadow = Color3.fromRGB(19, 22, 29),
         SliderOuter = Color3.fromRGB(48, 56, 75),
         SliderInner = Color3.fromRGB(255, 211, 105),
@@ -743,6 +746,15 @@ keybindOuterText.BackgroundTransparency = 1
 keybindOuterText.Size = UDim2.new(1, 0, 0, 14)
 keybindOuterText.Parent = keybindOuter
 
+keybindFrame.MouseEnter:Connect(function()
+    TweenService:Create(keybindFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.HoverItemFrame}):Play()
+end)
+
+keybindFrame.MouseLeave:Connect(function()
+    TweenService:Create(keybindFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.ItemFrame}):Play()
+    TweenService:Create(keybindOuterUIStroke, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.ItemUIStroke}):Play()
+end)
+
 local TextBounds = keybindOuterText.TextBounds
 
 keybindOuter.Size = UDim2.new(0, TextBounds.X + 10, 0, 14)
@@ -950,6 +962,72 @@ dragButton.MouseButton1Down:Connect(function() -- Skidded from material ui hehe,
 end)
 end
 
+function sectiontable:Input(Info)
+Info.Text = Info.Text or "Input"
+Info.Flag = Info.Flag or nil
+Info.Placeholder = Info.Placeholder or "Input"
+Info.Callback = Info.Callback or function() end
+
+local input = Instance.new("Frame")
+input.Name = "Input"
+input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+input.BackgroundTransparency = 1
+input.Size = UDim2.new(0, 175, 0, 28)
+input.Parent = itemContainer
+
+local inputFrame = Instance.new("Frame")
+inputFrame.Name = "InputFrame"
+inputFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+inputFrame.BackgroundColor3 =Theme.ItemFrame
+inputFrame.BorderSizePixel = 0
+inputFrame.ClipsDescendants = true
+inputFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+inputFrame.Size = UDim2.new(0, 171, 0, 24)
+inputFrame.Parent = input
+
+local inputUIStroke = Instance.new("UIStroke")
+inputUIStroke.Name = "buttonUIStroke"
+inputUIStroke.Color = Theme.ItemUIStroke
+inputUIStroke.Parent = inputFrame
+
+local textBox = Instance.new("TextBox")
+textBox.Name = "TextBox"
+textBox.CursorPosition = -1
+textBox.Font = Enum.Font.GothamBold
+textBox.PlaceholderColor3 = Theme.InputPlaceHolder
+textBox.PlaceholderText = "Webhook URL"
+textBox.Text = ""
+textBox.TextColor3 = Theme.ItemText
+textBox.TextSize = 12
+textBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+textBox.BackgroundTransparency = 1
+textBox.Size = UDim2.new(0, 171, 0, 24)
+textBox.Parent = inputFrame
+
+inputFrame.MouseEnter:Connect(function()
+    TweenService:Create(inputFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.HoverItemFrame}):Play()
+end)
+
+inputFrame.MouseLeave:Connect(function()
+    TweenService:Create(inputFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.ItemFrame}):Play()
+    TweenService:Create(inputUIStroke, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.ItemUIStroke}):Play()
+end)
+
+textBox.Focused:Connect(function()
+    TweenService:Create(inputUIStroke, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.ItemUIStrokeSelected}):Play()
+end)
+
+textBox.FocusLost:Connect(function()
+    task.spawn(function()
+        pcall(Info.Callback, textBox.Text)
+        TweenService:Create(inputUIStroke, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.ItemUIStroke}):Play()
+        if Info.Flag ~= nil then
+		    library.Flags[Info.Flag] = textBox.Text
+		end
+    end)
+end)
+end
+
 function sectiontable:Dropdown(Info)
 Info.Text = Info.Text or "Dropdown"
 Info.Flag = Info.Flag or nil
@@ -1051,6 +1129,7 @@ dropdownTextButton.MouseButton1Up:Connect(function()
 end)
 
 if Info.Default then
+    task.spawn(function()
     pcall(Info.Callback, Info.Default)
     if Info.Flag then
         library.Flags[Info.Flag] = Info.Default
@@ -1058,6 +1137,7 @@ if Info.Default then
     if Info.ChangeTextOnPick then
         dropdownText.Text = Info.Default
     end
+    end)
 end
 
 
@@ -1108,7 +1188,9 @@ dropdownElement.MouseLeave:Connect(function()
 end)
 
 dropdownElementButton.MouseButton1Click:Connect(function()
-    pcall(Info.Callback, dropdownElementText.Text)
+    task.spawn(function()
+        pcall(Info.Callback, dropdownElementText.Text)
+    end)
     if Info.Flag then
         library.Flags[Info.Flag] = dropdownElementText.Text
     end
