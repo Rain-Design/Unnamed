@@ -82,6 +82,8 @@ local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 
+local Mouse = game.Players.LocalPlayer:GetMouse()
+
 local Blacklist = {Enum.KeyCode.Unknown, Enum.KeyCode.CapsLock, Enum.KeyCode.Escape, Enum.KeyCode.Tab, Enum.KeyCode.Return, Enum.KeyCode.Backspace, Enum.KeyCode.Space, Enum.KeyCode.W, Enum.KeyCode.A, Enum.KeyCode.S, Enum.KeyCode.D}
 
 local request = syn and syn.request or http and http.request or http_request or request or httprequest
@@ -109,6 +111,12 @@ function  library:Darken(clr3)
 	brightness = math.clamp(brightness - 0.5, 0, 1)
 	
 	return Color3.fromHSV(z,x,brightness)
+end
+
+function library:GetXY(GuiObject)
+	local Max, May = GuiObject.AbsoluteSize.X, GuiObject.AbsoluteSize.Y
+	local Px, Py = math.clamp(Mouse.X - GuiObject.AbsolutePosition.X, 0, Max), math.clamp(Mouse.Y - GuiObject.AbsolutePosition.Y, 0, May)
+	return Px/Max, Py/May
 end
 
 function library:Window(Info)
@@ -732,8 +740,148 @@ UserInputService.InputBegan:Connect(function(Key, gameProcessed)
 end)
 end
 
+function sectiontable:Slider(Info)
+Info.Text = Info.Text or "Slider"
+Info.Flag = Info.Flag or nil
+Info.Default = Info.Default or 5
+Info.Minimum = Info.Minimum or 0
+Info.Maximum = Info.Maximum or 10
+Info.Postfix = Info.Postfix or ""
+Info.Callback = Info.Callback or function() end
+
+if Info.Minimum > Info.Maximum then
+    local ValueBefore = Info.Minimum
+    Info.Minimum, Info.Maximum = Info.Maximum, ValueBefore
+    end
+    
+    Info.Default = math.clamp(Info.Default, Info.Minimum, Info.Maximum)
+    local DefaultScale = (Info.Default - Info.Minimum) / (Info.Maximum - Info.Minimum)
+
+local slider = Instance.new("Frame")
+slider.Name = "Slider"
+slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+slider.BackgroundTransparency = 1
+slider.Position = UDim2.new(0, 0, 4, 0)
+slider.Size = UDim2.new(0, 175, 0, 36)
+slider.Parent = itemContainer
+
+local sliderFrame = Instance.new("Frame")
+sliderFrame.Name = "sliderFrame"
+sliderFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+sliderFrame.BorderSizePixel = 0
+sliderFrame.Position = UDim2.new(0, 2, 0, 2)
+sliderFrame.Size = UDim2.new(0, 171, 0, 32)
+sliderFrame.Parent = slider
+
+local sliderText = Instance.new("TextLabel")
+sliderText.Name = "sliderText"
+sliderText.Font = Enum.Font.GothamBold
+sliderText.Text = Info.Text
+sliderText.TextColor3 = Color3.fromRGB(232, 232, 232)
+sliderText.TextSize = 12
+sliderText.TextXAlignment = Enum.TextXAlignment.Left
+sliderText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+sliderText.BackgroundTransparency = 1
+sliderText.Position = UDim2.new(0.0234, 0, 0, 0)
+sliderText.Size = UDim2.new(0, 167, 0, 24)
+sliderText.Parent = sliderFrame
+
+local sliderUIStroke = Instance.new("UIStroke")
+sliderUIStroke.Name = "sliderUIStroke"
+sliderUIStroke.Color = Color3.fromRGB(41, 41, 50)
+sliderUIStroke.Parent = sliderFrame
+
+local sliderValueText = Instance.new("TextLabel")
+sliderValueText.Name = "sliderValueText"
+sliderValueText.Font = Enum.Font.GothamBold
+sliderValueText.Text = tostring(Info.Default)..Info.Postfix
+sliderValueText.TextColor3 = Color3.fromRGB(232, 232, 232)
+sliderValueText.TextSize = 12
+sliderValueText.TextXAlignment = Enum.TextXAlignment.Right
+sliderValueText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+sliderValueText.BackgroundTransparency = 1
+sliderValueText.Position = UDim2.new(0.0234, 0, 0, 0)
+sliderValueText.Size = UDim2.new(0, 163, 0, 24)
+sliderValueText.Parent = sliderFrame
+
+local sliderOuter = Instance.new("Frame")
+sliderOuter.Name = "sliderOuter"
+sliderOuter.BackgroundColor3 = Color3.fromRGB(45, 45, 52)
+sliderOuter.BorderSizePixel = 0
+sliderOuter.Position = UDim2.new(0, 4, 0, 22)
+sliderOuter.Size = UDim2.new(0, 163, 0, 5)
+sliderOuter.Parent = sliderFrame
+
+local sliderInner = Instance.new("Frame")
+sliderInner.Name = "sliderInner"
+sliderInner.BackgroundColor3 = Color3.fromRGB(80, 201, 206)
+sliderInner.BorderSizePixel = 0
+sliderInner.Size = UDim2.new(DefaultScale, 0, 0, 5)
+sliderInner.Parent = sliderOuter
+
+local dragIcon = Instance.new("ImageLabel")
+dragIcon.Name = "dragIcon"
+dragIcon.Image = "rbxassetid://10766200938"
+dragIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+dragIcon.BackgroundTransparency = 1
+dragIcon.BorderSizePixel = 0
+dragIcon.Position = UDim2.new(DefaultScale, 0, 0, -2)
+dragIcon.Size = UDim2.new(0, 9, 0, 9)
+dragIcon.Parent = sliderInner
+
+local dragButton = Instance.new("TextButton")
+dragButton.Name = "dragButton"
+dragButton.Font = Enum.Font.SourceSans
+dragButton.Text = ""
+dragButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+dragButton.TextSize = 14
+dragButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+dragButton.BackgroundTransparency = 1
+dragButton.Size = UDim2.new(0, 9, 0, 9)
+dragButton.Parent = dragIcon
+
+task.spawn(function()
+    pcall(Info.Callback, Info.Default)
+    if Info.Flag then
+        library.Flags[Info.Flag] = Info.Default
+    end
+end)
+
+local MinSize = 0
+local MaxSize = 1
+
+local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * DefaultScale
+SizeFromScale = SizeFromScale - (SizeFromScale % 2)
+
+dragButton.MouseButton1Down:Connect(function() -- Skidded from material ui hehe, sorry
+	local MouseMove, MouseKill
+	MouseMove = Mouse.Move:Connect(function()
+		local Px = library:GetXY(sliderOuter)
+		SizeFromScale = (MinSize +  (MaxSize - MinSize)) * Px
+		local Value = math.floor(Info.Minimum + ((Info.Maximum - Info.Minimum) * Px))
+		SizeFromScale = SizeFromScale - (SizeFromScale % 2)
+		TweenService:Create(sliderInner, TweenInfo.new(0.125, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(Px,0,0,5)}):Play()
+        TweenService:Create(dragIcon, TweenInfo.new(0.125, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Position = UDim2.new(Px,0,0,-2)}):Play()
+		if Info.Flag then
+		    library.Flags[Info.Flag] = Value
+		end
+		sliderValueText.Text = tostring(Value)..Info.Postfix
+		task.spawn(function()
+		    pcall(Info.Callback, Value)
+		end)
+	end)
+	MouseKill = UserInputService.InputEnded:Connect(function(UserInput)
+		if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
+			MouseMove:Disconnect()
+			MouseKill:Disconnect()
+		end
+	end)
+end)
+end
+
 function sectiontable:Dropdown(Info)
 Info.Text = Info.Text or "Dropdown"
+Info.Flag = Info.Flag or nil
 Info.Default = Info.Default or nil
 Info.List = Info.List or {}
 Info.Callback = Info.Callback or function() end
@@ -833,6 +981,9 @@ end)
 
 if Info.Default then
     pcall(Info.Callback, Info.Default)
+    if Info.Flag then
+        library.Flags[Info.Flag] = Info.Default
+    end
     if Info.ChangeTextOnPick then
         dropdownText.Text = Info.Default
     end
@@ -887,6 +1038,9 @@ end)
 
 dropdownElementButton.MouseButton1Click:Connect(function()
     pcall(Info.Callback, dropdownElementText.Text)
+    if Info.Flag then
+        library.Flags[Info.Flag] = dropdownElementText.Text
+    end
     if Info.ChangeTextOnPick then
         dropdownText.Text = dropdownElementText.Text
     end
@@ -948,7 +1102,7 @@ Info.Callback = Info.Callback or function() end
 
 local toggletable = {}
 
-if Info.Flag ~= nil then
+if Info.Flag then
     library.Flags[Info.Flag] = Info.Default
 end
 
@@ -1046,7 +1200,7 @@ toggleInner.Parent = toggleOuter
 
 function toggletable:Set(bool)
 Enabled = bool
-if Info.Flag ~= nil then
+if Info.Flag then
     library.Flags[Info.Flag] = bool
 end
 TweenService:Create(toggleOuter, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = bool and Theme.ToggleOuterEnabled or Theme.ToggleOuter}):Play()
