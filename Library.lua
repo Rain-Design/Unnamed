@@ -77,7 +77,7 @@ local Themes = {
         ToggleInnerEnabled = Color3.fromRGB(255, 183, 38),
         ContainerHolder = Color3.fromRGB(32, 32, 47),
         HighlightUIStroke = Color3.fromRGB(86, 89, 127),
-        Highlight = Color3.fromRGB(255, 183, 38)
+        Highlight = Color3.fromRGB(255, 199, 87)
     },
     ["Starry Night"] = {
         Topbar = Color3.fromRGB(21, 26, 33),
