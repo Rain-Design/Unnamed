@@ -1067,7 +1067,7 @@ dropdownElementButton.Size = UDim2.new(0, 171, 0, 24)
 dropdownElementButton.Parent = dropdownElement
 
 dropdownElement.MouseEnter:Connect(function()
-    TweenService:Create(dropdownElement, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundTransparency = .98}):Play()
+    TweenService:Create(dropdownElement, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundTransparency = .97}):Play()
 end)
 
 dropdownElement.MouseLeave:Connect(function()
