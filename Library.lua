@@ -77,7 +77,40 @@ local Themes = {
         ToggleInnerEnabled = Color3.fromRGB(255, 183, 38),
         ContainerHolder = Color3.fromRGB(32, 32, 47),
         HighlightUIStroke = Color3.fromRGB(86, 89, 127),
-        Highlight = Color3.fromRGB(115, 213, 239)
+        Highlight = Color3.fromRGB(255, 183, 38)
+    },
+    ["Starry Night"] = {
+        Topbar = Color3.fromRGB(21, 26, 33),
+        TabContainer = Color3.fromRGB(19, 23, 30),
+        Lines = Color3.fromRGB(44, 53, 67),
+        HoverTabFrame = Color3.fromRGB(41, 49, 65),
+        ItemUIStroke = Color3.fromRGB(42, 49, 65),
+        TabFrame = Color3.fromRGB(34, 41, 54),
+        SectionFrame = Color3.fromRGB(23, 27, 35),
+        TabText = Color3.fromRGB(237, 237, 237),
+        ItemText = Color3.fromRGB(237, 237, 237),
+        SectionText = Color3.fromRGB(237, 237, 237),
+        ItemUIStrokeSelected = Color3.fromRGB(255, 211, 105),
+        SelectedTabFrame = Color3.fromRGB(53, 64, 84),
+        ItemFrame = Color3.fromRGB(32, 37, 49),
+        HoverItemFrame = Color3.fromRGB(43, 50, 67),
+        DropdownIcon = Color3.fromRGB(175, 175, 175),
+        SectionUIStroke = Color3.fromRGB(35, 41, 54),
+        MainUIStroke = Color3.fromRGB(54, 65, 85),
+        Main = Color3.fromRGB(19, 22, 29),
+        Shadow = Color3.fromRGB(19, 22, 29),
+        SliderOuter = Color3.fromRGB(48, 56, 75),
+        SliderInner = Color3.fromRGB(255, 211, 105),
+        TabUIStroke = Color3.fromRGB(45, 54, 71),
+        ToggleOuter = Color3.fromRGB(48, 56, 75),
+        ToggleOuterEnabled = Color3.fromRGB(58, 68, 91),
+        ToggleOuterUIStroke = Color3.fromRGB(42, 49, 65),
+        ToggleOuterUIStrokeEnabled = Color3.fromRGB(255, 211, 105),
+        ToggleInner = Color3.fromRGB(77, 90, 121),
+        ToggleInnerEnabled = Color3.fromRGB(255, 211, 105),
+        ContainerHolder = Color3.fromRGB(25, 32, 43),
+        HighlightUIStroke = Color3.fromRGB(79, 94, 124),
+        Highlight = Color3.fromRGB(255, 229, 121)
     }
 }
 
