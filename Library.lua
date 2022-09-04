@@ -34,6 +34,8 @@ local Themes = {
         Main = Color3.fromRGB(20, 20, 25),
         Shadow = Color3.fromRGB(20, 20, 25),
         TabUIStroke = Color3.fromRGB(39, 39, 47),
+        SliderOuter = Color3.fromRGB(60, 60, 70),
+        SliderInner = Color3.fromRGB(80, 201, 206),
         ToggleOuter = Color3.fromRGB(35, 35, 40),
         ToggleOuterEnabled = Color3.fromRGB(53, 53, 61),
         ToggleOuterUIStroke = Color3.fromRGB(54, 54, 62),
@@ -64,6 +66,8 @@ local Themes = {
         MainUIStroke = Color3.fromRGB(64, 67, 100),
         Main = Color3.fromRGB(26, 27, 38),
         Shadow = Color3.fromRGB(26, 27, 38),
+        SliderOuter = Color3.fromRGB(56, 59, 83),
+        SliderInner = Color3.fromRGB(255, 183, 38),
         TabUIStroke = Color3.fromRGB(55, 56, 80),
         ToggleOuter = Color3.fromRGB(56, 59, 83),
         ToggleOuterEnabled = Color3.fromRGB(77, 82, 115),
@@ -811,18 +815,28 @@ sliderValueText.Parent = sliderFrame
 
 local sliderOuter = Instance.new("Frame")
 sliderOuter.Name = "sliderOuter"
-sliderOuter.BackgroundColor3 = Theme.ToggleOuter
+sliderOuter.BackgroundColor3 = Theme.SliderOuter
 sliderOuter.BorderSizePixel = 0
 sliderOuter.Position = UDim2.new(0, 4, 0, 22)
 sliderOuter.Size = UDim2.new(0, 163, 0, 5)
 sliderOuter.Parent = sliderFrame
 
+local sliderOuterUICorner = Instance.new("UICorner")
+sliderOuterUICorner.Name = "UICorner"
+sliderOuterUICorner.CornerRadius = UDim.new(0, 100)
+sliderOuterUICorner.Parent = sliderOuter
+
 local sliderInner = Instance.new("Frame")
 sliderInner.Name = "sliderInner"
-sliderInner.BackgroundColor3 = Theme.ToggleInnerEnabled
+sliderInner.BackgroundColor3 = Theme.SliderInner
 sliderInner.BorderSizePixel = 0
 sliderInner.Size = UDim2.new(DefaultScale, 0, 0, 5)
 sliderInner.Parent = sliderOuter
+
+local sliderInnerUICorner = Instance.new("UICorner")
+sliderInnerUICorner.Name = "UICorner"
+sliderInnerUICorner.CornerRadius = UDim.new(0, 100)
+sliderInnerUICorner.Parent = sliderInner
 
 local dragIcon = Instance.new("ImageLabel")
 dragIcon.Name = "dragIcon"
