@@ -1342,6 +1342,7 @@ if DropdownOpened then
     TweenService:Create(dropdown, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, dropdown.Size.Y.Offset + 24)}):Play()
     TweenService:Create(dropdownFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownFrame.Size.Y.Offset + 24)}):Play()
     TweenService:Create(dropdownContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownContainer.Size.Y.Offset + 24)}):Play()
+    task.wait(.1)
 end
 
 local dropdownElement = Instance.new("Frame")
@@ -1427,6 +1428,7 @@ function insidedropdown:Remove(opt)
                 TweenService:Create(dropdown, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, dropdown.Size.Y.Offset - 24)}):Play()
                 TweenService:Create(dropdownFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownFrame.Size.Y.Offset - 24)}):Play()
                 TweenService:Create(dropdownContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownContainer.Size.Y.Offset - 24)}):Play()
+                task.wait(.1)
             end
             v:Destroy()
         end
