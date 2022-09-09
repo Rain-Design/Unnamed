@@ -824,7 +824,7 @@ function sectiontable:Select()
     if OpenedSec then
         task.spawn(function()
             sectionButton.BackgroundTransparency = 0
-            sectionButton.Size = UDim2.new(0, 175, 0, 31)
+            sectionButton.Size = UDim2.new(0, 175, 0, 35)
             task.wait(.1)
             sectionButton.Size = UDim2.new(0, 175, 0, 28)
             sectionButton.BackgroundTransparency = 0
@@ -1339,6 +1339,9 @@ if DropdownOpened then
     TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, section.Size.Y.Offset + 24)}):Play()
     TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset + 24)}):Play()
     TweenService:Create(itemContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset + 24)}):Play()
+    TweenService:Create(dropdown, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, dropdown.Size.Y.Offset + 24)}):Play()
+    TweenService:Create(dropdownFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownFrame.Size.Y.Offset + 24)}):Play()
+    TweenService:Create(dropdownContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownContainer.Size.Y.Offset + 24)}):Play()
 end
 
 local dropdownElement = Instance.new("Frame")
@@ -1421,39 +1424,21 @@ function insidedropdown:Remove(opt)
                 TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, section.Size.Y.Offset - 24)}):Play()
                 TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset - 24)}):Play()
                 TweenService:Create(itemContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset - 24)}):Play()
+                TweenService:Create(dropdown, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, dropdown.Size.Y.Offset - 24)}):Play()
+                TweenService:Create(dropdownFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownFrame.Size.Y.Offset - 24)}):Play()
+                TweenService:Create(dropdownContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 171, 0, dropdownContainer.Size.Y.Offset - 24)}):Play()
             end
             v:Destroy()
         end
     end
 end
 
-function insidedropdown:Refresh(List)
-
+function insidedropdown:Clear()
     for _,v in pairs(dropdownContainer:GetChildren()) do
         if v.ClassName == "Frame" then
-            DropdownY = DropdownY - 24
-            if DropdownOpened then
-                TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, section.Size.Y.Offset - 24)}):Play()
-                TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, sectionFrame.Size.Y.Offset - 24)}):Play()
-                TweenService:Create(itemContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(0, 175, 0, itemContainer.Size.Y.Offset - 24)}):Play()
-            end
-            v:Destroy()
+            insidedropdown:Remove(v.dropdownElementText.Text)
         end
     end
-
-    for _,v in pairs(List) do
-        insidedropdown:Add(v)
-    end
-    
-    if DropdownOpened then
-        containerHolder.ClipsDescendants = false
-        TweenService:Create(dropdown, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = DropdownOpened and UDim2.new(0, 175, 0, DropdownY + 28) or UDim2.new(0, 175, 0, 28)}):Play()
-        TweenService:Create(dropdownFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = DropdownOpened and UDim2.new(0, 171, 0, DropdownY + 24) or UDim2.new(0, 171, 0, 24)}):Play()
-        TweenService:Create(dropdownContainer, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = DropdownOpened and UDim2.new(0, 171, 0, DropdownY) or UDim2.new(0, 171, 0, 0)}):Play()
-        TweenService:Create(dropdownIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Rotation = DropdownOpened and -90 or 90}):Play()
-        dropdownIcon.Position = DropdownOpened and UDim2.new(0, 156, 0, 5) or UDim2.new(0, 155, 0, 5)
-    end
-
 end
 
 for _,v in ipairs(Info.List) do
