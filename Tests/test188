@@ -1,0 +1,164 @@
+local Library = {
+    Flags = {}
+}
+Library.flags = Library.Flags
+
+local Utilities = {}
+
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+local function Create(instance, properties, children)
+    local Instance = Instance.new(instance)
+    local Childrens = children or {}
+
+    for property, value in pairs(properties) do
+        Instance[property] = value
+    end
+
+    for _, v in pairs(Childrens) do
+        v.Parent = Instance
+    end
+
+    pcall(function()
+        Instance.BorderSizePixel = 0
+    end)
+
+    return Instance
+end
+
+function Utilities:Tween(inst, speed, props, callback)
+    callback = callback or function() end
+
+    local Tween = TweenService:Create(inst, TweenInfo.new(speed, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), props)
+    Tween:Play()
+
+    Tween.Completed:Connect(function()
+        task.spawn(callback)
+    end)
+
+    return Tween
+end
+
+function Library:Window(Info)
+Info.Text = Info.Text or "Window"
+
+local WindowTable = {}
+
+local Marble = Create("ScreenGui", {
+    Name = "Marble",
+    ZIndexBehavior = Enum.ZIndexBehavior.Global,
+    Parent = CoreGui
+},{
+    Create("Frame", {
+        Name = "Window",
+        Position = UDim2.new(0.03, 0, 0.1, 0),
+        BackgroundColor3 = Color3.fromRGB(14, 14, 14),
+        Size = UDim2.new(0, 220, 0, 37),
+        BackgroundTransparency = .1,
+        ClipsDescendants = true
+    }, {
+        Create("UICorner", {
+            CornerRadius = UDim.new(0, 4)
+        }),
+        Create("Frame", {
+            Name = "Topbar",
+            BackgroundColor3 = Color3.fromRGB(17, 17, 17),
+            Size = UDim2.new(0, 220, 0, 37)
+        }, {
+            Create("UICorner", {
+                CornerRadius = UDim.new(0, 4)
+            })
+        }),
+        Create("Frame", {
+            Name = "Container",
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 220, 0, 0),
+            Position = UDim2.new(0, 0, 0, 37),
+            ClipsDescendants = true
+        }, {
+            Create("UIListLayout", {
+                Name = "ContainerLayout",
+                SortOrder = Enum.SortOrder.LayoutOrder
+            }),
+        }),
+        Create("TextLabel", {
+            Name = "TopbarTitle",
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 220, 0, 37),
+            Text = Info.Text,
+            TextSize = 14,
+            Font = Enum.Font.GothamBold,
+            TextColor3 = Color3.fromRGB(235, 235, 235)
+        })
+    })
+})
+
+Marble.Window.Container.ChildAdded:Connect(function()
+    Utilities:Tween(Marble.Window, .125, {Size = UDim2.new(0, 220, 0, Marble.Window.Size.Y.Offset + 37)})
+    Utilities:Tween(Marble.Window.Container, .125, {Size = UDim2.new(0, 220, 0, Marble.Window.Container.Size.Y.Offset + 37)})
+end)
+
+function WindowTable:Button(Info)
+Info.Text = Info.Text or "Button"
+Info.Callback = Info.Callback or function() end
+
+local Button = Create("Frame", {
+    Name = "Button",
+    Parent = Marble.Window.Container,
+    BackgroundColor3 = Color3.fromRGB(17, 17, 17),
+    Size = UDim2.new(0, 220, 0, 37)
+}, {
+    Create("Frame", {
+        Name = "Fix",
+        BackgroundColor3 = Color3.fromRGB(17, 17, 17),
+        AnchorPoint = Vector2.new(.5, 0),
+        Position = UDim2.new(.5, 0, 0, 0),
+        Size = UDim2.new(0, 220, 0, 5)
+    }),
+    Create("TextButton", {
+        Name = "ButtonTextButton",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, 220, 0, 37),
+        Text = Info.Text,
+        TextColor3 = Color3.fromRGB(225, 225, 225),
+        Font = Enum.Font.GothamBold,
+        TextSize = 14
+    }),
+    Create("UICorner", {
+        CornerRadius = UDim.new(0, 4)
+    })
+})
+
+Button.ButtonTextButton.MouseEnter:Connect(function()
+    Utilities:Tween(Button, .18, {BackgroundColor3 = Color3.fromRGB(22, 190, 231)})
+    Utilities:Tween(Button.Fix, .18, {BackgroundColor3 = Color3.fromRGB(22, 190, 231)})
+    Utilities:Tween(Button.ButtonTextButton, .18, {TextColor3 = Color3.fromRGB(255, 255, 255)})
+end)
+
+Button.ButtonTextButton.MouseLeave:Connect(function()
+    Utilities:Tween(Button, .18, {BackgroundColor3 = Color3.fromRGB(14, 14, 14)})
+    Utilities:Tween(Button.Fix, .18, {BackgroundColor3 = Color3.fromRGB(14, 14, 14)})
+    Utilities:Tween(Button.ButtonTextButton, .18, {TextColor3 = Color3.fromRGB(225, 225, 225)})
+end)
+
+Button.ButtonTextButton.MouseButton1Down:Connect(function()
+    Utilities:Tween(Button, .125, {BackgroundColor3 = Color3.fromRGB(75, 210, 242)})
+    Utilities:Tween(Button.Fix, .125, {BackgroundColor3 = Color3.fromRGB(75, 210, 242)})
+end)
+
+Button.ButtonTextButton.MouseButton1Up:Connect(function()
+    Utilities:Tween(Button, .125, {BackgroundColor3 = Color3.fromRGB(22, 190, 231)})
+    Utilities:Tween(Button.Fix, .125, {BackgroundColor3 = Color3.fromRGB(22, 190, 231)})
+end)
+
+Button.ButtonTextButton.MouseButton1Click:Connect(function()
+    task.spawn(Info.Callback)
+end)
+
+end
+
+return WindowTable
+end
+
+return Library
