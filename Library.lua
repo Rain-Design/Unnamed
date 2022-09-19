@@ -818,29 +818,15 @@ local OpenedSec = false
 function sectiontable:Select()
     OpenedSec = not OpenedSec
     SectionOpened.Value = OpenedSec
-    if not OpenedSec then
-        containerHolder.Visible = false
-    end
-    if OpenedSec then
-        task.spawn(function()
-            sectionButton.BackgroundTransparency = 0
-            sectionButton.Size = UDim2.new(0, 175, 0, 35)
-            task.wait(.1)
-            sectionButton.Size = UDim2.new(0, 175, 0, 28)
-            sectionButton.BackgroundTransparency = 0
-        end)
-    end
-    TweenService:Create(section, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = OpenedSec and UDim2.new(0, 175, 0, SectionY + 5) or UDim2.new(0, 175, 0, 33)}):Play()
-    TweenService:Create(sectionFrame, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = OpenedSec and UDim2.new(0, 175, 0, SectionY) or UDim2.new(0, 175, 0, 28)}):Play()
-    TweenService:Create(containerHolder, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Position = OpenedSec and UDim2.new(0, 0, 0, 28) or UDim2.new(0, 0, 0, 0)}):Play()
-    TweenService:Create(containerHolder, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = OpenedSec and UDim2.new(0, 175, 0, ContainerY) or UDim2.new(0, 175, 0, 0)}):Play()
-    TweenService:Create(sectionIcon, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Rotation = OpenedSec and -90 or 90}):Play()
+
+    containerHolder.Visible = true
+    section.Size = OpenedSec and UDim2.new(0, 175, 0, SectionY + 5) or UDim2.new(0, 175, 0, 33)
+    sectionFrame.Size = OpenedSec and UDim2.new(0, 175, 0, SectionY) or UDim2.new(0, 175, 0, 28)
+    containerHolder.Position = OpenedSec and UDim2.new(0, 0, 0, 28) or UDim2.new(0, 0, 0, 0)
+    containerHolder.Size = OpenedSec and UDim2.new(0, 175, 0, ContainerY) or UDim2.new(0, 175, 0, 0)
+    sectionIcon.Rotation = OpenedSec and -90 or 90
     sectionIcon.Position = OpenedSec and UDim2.new(0, 156, 0, 5) or UDim2.new(0, 155, 0, 5)
-    TweenService:Create(itemContainer, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = OpenedSec and UDim2.new(0, 175, 0, ContainerY) or UDim2.new(0, 175, 0, 0)}):Play()
-    if OpenedSec then
-        task.wait(.125)
-        containerHolder.Visible = true
-    end
+    itemContainer.Size = OpenedSec and UDim2.new(0, 175, 0, ContainerY) or UDim2.new(0, 175, 0, 0)
 end
 
 task.spawn(function()
